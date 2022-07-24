@@ -11,7 +11,22 @@
 //
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
+
+Cypress.Commands.add('login', () => { 
+  cy.session("write", () => {
+    cy.visit('/wp-admin')
+    cy.get('input#user_login.input').type("TestUser")
+    cy.get('input#user_pass.input.password-input').type('C1nder3llaInW0rdpre$$!')
+    cy.contains('Log In').click()
+    cy.url().should('contain', '/wp-admin')
+  })
+})
+
 //
+//
+//		  "wp-submit": "Log In",
+//		  "redirect_to": "http://127.25.0.1/wp-admin",
+//		  "testcookie": "1"
 //
 // -- This is a child command --
 // Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
