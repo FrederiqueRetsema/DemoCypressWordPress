@@ -1,5 +1,0 @@
-{
-    "baseUrl": "http://{LOCALHOST}/",
-    "pluginsFile": false,
-    "fixturesFolder": false
-}
