@@ -19,7 +19,7 @@ describe('write blog', () => {
 	cy.focused()
 	  .click()
 	  
-    cy.get("h1.wp-block.wp-block-post-title.block-editor-block-list__block.editor-post-title.editor-post-title__input.rich-text")
+    cy.get('[aria-label="Add title"]')
       .type("MyTitle")
 	cy.contains("MyTitle")
   })
@@ -30,7 +30,7 @@ describe('write blog', () => {
 	cy.focused()
 	  .click()
 	  
-    cy.get("button.components-button.block-editor-inserter__toggle.has-icon")
+    cy.get('[aria-label="Add block"]')
       .click()
 	cy.contains("Heading")
 	  .click()
@@ -45,12 +45,12 @@ describe('write blog', () => {
 	cy.focused()
 	  .click()
 
-	cy.get('div.is-root-container.block-editor-block-list__layout')
-	  .type("MyText")
-	cy.contains("MyText")
+	cy.get('[aria-label="Add default block"]')
+	  .type('MyText')
+	cy.contains('MyText')
   })
 
-  it.skip('Add bold text', () => {
+  it('Add bold text', () => {
     cy.visit('/wp-admin/post-new.php')
 	// Skip welcome
 	cy.focused()
@@ -61,14 +61,14 @@ describe('write blog', () => {
       .trigger('mousemove')
 	  .click()
 	cy.wait(100)
-	cy.get('div.is-root-container.block-editor-block-list__layout')
+	cy.get('[aria-label="Block tools"]',{force:true})
       .trigger('mousemove')
-    cy.get('button.id-t5am21-6.components-button.components-toolbar-button.has-icon')
+    cy.get('[aria-label="Bold"]')
 	  .click()
 
 	cy.get('div.is-root-container.block-editor-block-list__layout')
-	  .type("MyBoldText")
-	cy.contains("MyBoldText")
+	  .type('MyBoldText')
+	cy.contains('MyBoldText')
 	// Doesn't work: the context menu doesn't show
   })
 
@@ -78,76 +78,76 @@ describe('write blog', () => {
 	cy.focused()
 	  .click()
 	  
-    cy.get("button.components-button.block-editor-inserter__toggle.has-icon")
+    cy.get('[aria-label="Add block"]')
       .click()
-	cy.contains("Image")
+	cy.contains('Image')
 	  .click()
-	cy.contains("Insert from URL")
+	cy.contains('Insert from URL')
 	  .click()
 	cy.get('[aria-label="URL"]')
 	  .type("https://www.pronamic.nl/wp-content/uploads/2019/10/Featured-image-WordPress.svg{enter}")
 	cy.get('[aria-label="Image caption text"]')
-	  .type("WordPress logo caption text{enter}")
-	cy.contains("WordPress logo caption text")
+	  .type('WordPress logo caption text{enter}')
+	cy.contains('WordPress logo caption text')
 	
 	cy.get('[aria-label="Block: Image"]')
 	  .click()
 
     // Caption in submenu	
 	cy.get('[id="inspector-textarea-control-1"]')
-	  .type("Caption-in-submenu")
-	  .should("have.value", "Caption-in-submenu")
+	  .type('Caption-in-submenu')
+	  .should('have.value', 'Caption-in-submenu')
 	  
 	// Size X 1540 -> 154
 	cy.get('[id="inspector-text-control-2"]')
 	  .clear()
-	  .type("154")
-	  .should("have.value", "154")
+	  .type('154')
+	  .should("have.value", '154')
 
 	// Size Y 800 -> 80
 	cy.get('[id="inspector-text-control-3"]')
 	  .clear()
-	  .type("80")
-	  .should("have.value", "80")
+	  .type('80')
+	  .should("have.value", '80')
 
     // Button 25%	  
-	 cy.contains("25%")
+	 cy.contains('25%')
 	   .click()
  	 cy.get('[id="inspector-text-control-3"]')
-	  .should("have.value", "200")
+	  .should('have.value', '200')
 
     // Button 50%	  
-	 cy.contains("50%")
+	 cy.contains('50%')
 	   .click()
  	 cy.get('[id="inspector-text-control-3"]')
-	  .should("have.value", "400")
+	  .should('have.value', '400')
 
     // Button 75%	  
-	 cy.contains("75%")
+	 cy.contains('75%')
 	   .click()
  	 cy.get('[id="inspector-text-control-3"]')
-	  .should("have.value", "600")
+	  .should('have.value', '600')
 
     // Button 100%	  
-	 cy.contains("100%")
+	 cy.contains('100%')
 	   .click()
  	 cy.get('[id="inspector-text-control-3"]')
-	  .should("have.value", "800")
+	  .should('have.value', '800')
 
 
     // Radius
 	cy.get('[aria-label="Border radius"]')
 	  .clear()
-	  .type("20{enter}")
+	  .type('20{enter}')
 	cy.get('[aria-label="Border radius"]')
 	  .clear()
-	  .type("40{enter}")
+	  .type('40{enter}')
 	cy.get('[aria-label="Border radius"]')
 	  .clear()
-	  .type("100{enter}")
+	  .type('100{enter}')
 	cy.get('[aria-label="Border radius"]')
 	  .clear()
-	  .type("1000{enter}")
+	  .type('1000{enter}')
 	
   })
 
@@ -157,7 +157,7 @@ describe('write blog', () => {
 	cy.focused()
 	  .click()
 
-    cy.get("button.components-button.block-editor-inserter__toggle.has-icon")
+    cy.get('[aria-label="Add block"]')
       .click()
 	cy.contains("List")
 	  .click()
@@ -192,7 +192,7 @@ describe('write blog', () => {
 	cy.focused()
 	  .click()
 
-    cy.get("button.components-button.block-editor-inserter__toggle.has-icon")
+    cy.get('[aria-label="Add block"]')
       .click()
 	cy.contains("Quote")
 	  .click()
@@ -216,7 +216,7 @@ describe('write blog', () => {
   })
 })
 
-describe("Browse All", () => {
+describe.skip("Browse All", () => {
   beforeEach(() => {
     cy.login()
   })
@@ -227,7 +227,7 @@ describe("Browse All", () => {
 	cy.focused()
 	  .click()
 
-    cy.get("button.components-button.block-editor-inserter__toggle.has-icon")
+    cy.get('[aria-label="Add block"]')
       .click()
 	cy.contains("Browse all")
 	  .click()
@@ -245,7 +245,7 @@ describe("Browse All", () => {
 	cy.focused()
 	  .click()
 
-    cy.get("button.components-button.block-editor-inserter__toggle.has-icon")
+    cy.get('[aria-label="Add block"]')
       .click()
 	cy.contains("Browse all")
 	  .click()
@@ -268,25 +268,30 @@ describe.skip('Newest test', () => {
     cy.login()
   })
 
-  it('Add Pullquote', () => {
+  it('Add bold text', () => {
     cy.visit('/wp-admin/post-new.php')
 	// Skip welcome
 	cy.focused()
 	  .click()
-
-    cy.get("button.components-button.block-editor-inserter__toggle.has-icon")
-      .click()
-	cy.contains("Browse all")
+	  
+	cy.get('[aria-label="Add default block"]')
+	  .type(' ')
+	cy.get('[aria-label="Paragraph block"]')
 	  .click()
-	cy.contains("Pullquote")
-	  .click()
+	cy.wait(100)
+	cy.get('div.components-popover__content',{force:true})
+	  .invoke('show')
+      .trigger('mousemove')
+    cy.get('[aria-label="Bold"]')
+	  .click({force:true})
 
-    cy.get('[aria-label="Pullquote text"]')	
-	  .type('MyQuote')
-	cy.contains('MyQuote')
-
-    cy.get('[aria-label="Pullquote citation text"]')	
-	  .type('MyCitation')
-	cy.contains('MyCitation')
+	cy.get('div.is-root-container.block-editor-block-list__layout')
+	  .type('MyBoldText')
+	cy.contains('MyBoldText')
+	// Doesn't work: the context menu doesn't show
   })
+
 })
+
+
+

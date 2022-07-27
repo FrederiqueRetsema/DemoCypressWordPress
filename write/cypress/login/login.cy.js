@@ -1,94 +1,79 @@
+// Check checkbox Remember Me doesn't work (yet) from within Cypress.
+
 describe('Login', () => {
   it('Check Username And Password Without Remember Me', () => {
-    cy.visit("/wp-admin")
+    cy.visit('/wp-admin')
 	cy.wait(1500)
 
-    cy.get("input#user_login.input")
-      .type("TestUser")
-      .should('have.value', "TestUser")  
+    cy.get('input#user_login.input')
+      .type('TestUser')
+      .should('have.value', 'TestUser')  
     
-    cy.get("input#user_pass.input.password-input")
-      .type("C1nder3llaInW0rdpre$$!")
-      .should('have.value', "C1nder3llaInW0rdpre$$!")  
+    cy.get('input#user_pass.input.password-input')
+      .type('C1nder3llaInW0rdpre$$!')
+      .should('have.value', 'C1nder3llaInW0rdpre$$!')  
     
-    cy.contains("Log In")
+    cy.contains('Log In')
       .click()
 	cy.url()
 	  .should('include', '/wp-admin')
 	cy.contains('Howdy, TestUser')
-  })
-  
-  it('Log Out', () => {
-	cy.contains('Howdy, TestUser')
-	cy.contains("Log Out")
+
+	cy.contains('Log Out')
 	  .click({force: true})
 	cy.url()
 	  .should('not.include', '/wp-admin')
-  })
-
-  it('Check if fields are NOT remembered', () => {
-    cy.visit("/wp-admin")
 	cy.wait(1500)
 
-    cy.get("input#user_login.input")
-      .type("TestUser")
-      .should('have.value', "TestUser")  
+    cy.get('input#user_login.input')
+      .should('have.value', '')  
     
-    cy.get("input#user_pass.input.password-input")
-      .type("C1nder3llaInW0rdpre$$!")
-      .should('have.value', "C1nder3llaInW0rdpre$$!")  
-    
-    cy.contains("Log In")
-      .click()
-	cy.url()
-	  .should('include', '/wp-admin')
-	cy.contains('Howdy, TestUser')
+    cy.get('input#user_pass.input.password-input')
+      .should('have.value', '')  
   })  
 
-  it('Log Out', () => {
-	cy.contains('Howdy, TestUser')
-	cy.contains("Log Out")
-	  .click({force: true})
-	cy.url()
-	  .should('not.include', '/wp-admin')
-  })
-
-  it('Check checkbox Remember Me', () => {
-    cy.visit("/wp-admin")
+  it.skip('Check checkbox Remember Me', () => {
+    cy.visit('/wp-admin')
 	cy.wait(1500)
 
-    cy.get("input#user_login.input")
-      .type("TestUser")
-      .should('have.value', "TestUser")  
+    cy.get('input#user_login.input')
+      .type('TestUser')
+      .should('have.value', 'TestUser')  
     
-    cy.get("input#user_pass.input.password-input")
+    cy.get('input#user_pass.input.password-input')
       .type("C1nder3llaInW0rdpre$$!")
-      .should('have.value', "C1nder3llaInW0rdpre$$!")  
+      .should('have.value', 'C1nder3llaInW0rdpre$$!')  
 
-	cy.contains("Remember Me")
-    cy.get("input#rememberme")
+	cy.contains('Remember Me')
+    cy.get('input#rememberme')
 	  .click()
     
-    cy.contains("Log In")
+    cy.contains('Log In')
       .click()
 	cy.url()
 	  .should('include', '/wp-admin')
 	cy.contains('Howdy, TestUser')
-  }),
-  
-  it('Log Out', () => {
-	cy.contains('Howdy, TestUser')
-	cy.contains("Log Out")
+	
+	cy.contains('Log Out')
 	  .click({force: true})
 	cy.url()
 	  .should('not.include', '/wp-admin')
-  }),
-
-  it('Link Go to Test Blog', () => {
-    cy.visit("/wp-admin")
 	cy.wait(1500)
 
-	cy.contains("Go to Test Blog")
+    // When Cypress clicks in the field login name, the user-id is not visible. 
+	// When done manually, it is visible.
+    cy.get('input#user_login.input')
+      .click()
+	cy.contains("TestUser")
+	cy.contains("********")
+    
+  })  
+
+  it('Link Go to Test Blog', () => {
+    cy.visit('/wp-admin')
+	cy.wait(1500)
+
+	cy.contains('Go to Test Blog')
 	  .click()
 	cy.url()
 	  .should('not.include', '/wp-admin')

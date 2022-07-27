@@ -8,8 +8,8 @@ describe('Check Updates screen', () => {
   it('Check Updates', () => {
     cy.visit('/wp-admin/update-core.php')
 
-	cy.contains("Current version")
-	cy.contains("Check again")
+	cy.contains('Current version')
+	cy.contains('Check again')
 	  .should('have.attr', 'href', Cypress.config().baseUrl+'/wp-admin/update-core.php?force-check=1')
   })
   
