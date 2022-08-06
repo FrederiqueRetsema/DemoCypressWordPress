@@ -3,8 +3,11 @@ const siteIpAddress = '192.168.2.202'
 
 module.exports = defineConfig({
   env: {
-	siteIpAddress: siteIpAddress
-  },
+	siteIpAddress: siteIpAddress,
+  userId: 'TestUser',
+  password: 'C1nder3llaInW0rdpre$$!',
+  databaseName: 'wordpress'
+},
   e2e: {
     baseUrl: 'http://'+siteIpAddress,
 	specPattern: '\\demo\\initialize_wp_db\\cypress\\**\\*.cy.js',

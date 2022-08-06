@@ -1,7 +1,5 @@
 // Check - open/close "Screen Options"
 //       - Reply in Comments
-//       - Edit in Comments (has different link, probably because there are multiple Edits - find a way
-//         to search within a certain area)
 
 describe('Check Screen options', () => {
   beforeEach(() => {
@@ -149,6 +147,7 @@ describe('Check At a Glance', () => {
   });
 
   it('Check 1 Post', () => {
+	cy.task('delete_posts')
     cy.visit('/wp-admin/index.php')
 	
     cy.contains('1 Post')
@@ -157,6 +156,7 @@ describe('Check At a Glance', () => {
   })
 
   it('Check 1 Comment', () => {
+    cy.task('remove_test_comments')
     cy.visit('/wp-admin/index.php')
 	
     cy.contains('1 Comment')
@@ -213,28 +213,29 @@ describe('Activity', () => {
     cy.visit('/wp-admin/index.php')
 	
     cy.contains('Reply')
-	  .click({force:true})
-	cy.get("textarea#replycontent.wp-editor-area")
+	    .click({force:true})
+	  cy.get("textarea#replycontent.wp-editor-area")
   })
 
-  it.skip('Check Recent Comments - Reply - type normal text', () => {
+  it('Check Recent Comments - Reply - type normal text', () => {
     cy.visit('/wp-admin/index.php')
-	
+    cy.wait(1000)
+
     cy.contains('Reply')
-	  .click({force:true})
-	cy.get('textarea#replycontent.wp-editor-area')
-	  .type('Normal text')
+	    .click({force:true})
+  	cy.get('textarea#replycontent.wp-editor-area')
+	    .type('Normal text', {force:true})
 	  
-	// Gives an application error
-	// When this is solved: also check bold, italic, etc
   })
 
-  it.skip('Check Recent Comments - Edit', () => {
+  it('Check Recent Comments - Edit', () => {
     cy.visit('/wp-admin/index.php')
 	
-    cy.contains('Edit')
-	  .should('have.attr', 'href', 'comment.php?action=editcomment&c=1')
-	// Finds something different - possibly because edit is too general. Find out how to find specific elements.
+	cy.get('div.dashboard-comment-wrap')
+	  .within(() => {
+        cy.contains('Edit')
+	      .should('have.attr', 'href', 'comment.php?action=editcomment&c=1')
+	  })
   })
 
   it('Check Recent Comments - Spam', () => {

@@ -78,6 +78,10 @@ In the rest of this document, I'm using 172.25.0.1 (it worked for me, when it do
 
 In the sandbox, change the IP address to your value in the files c:\demo\initialize_wp_db\config.cy.js and c:\demo\write\config.cy.js
 
+## Firewall
+You might have to open ports 80 and 3306 in the firewall. Please mind that Docker might block all traffic from other network cards.
+
+
 ## Initialize WordPress
 In the sandbox, execute the following commands to start Cypress and initialize the database via Cypress:
 
@@ -100,5 +104,8 @@ In the demo, use the \demo\write directory as the base to show what is going on:
 * Start notepad++, open c:\demo\write\
 * Show via F12 
 
+# Important
 
+## Goal of this demo
+This repo is the base for the demo. It contains a lot of tests, mainly to show how Cypress works. Many tests are just meant to trigger the use of a file on the serverside, not to do intensive testing of the functionality. The reason for this is that these tests will be the base for another example repository about distroless containers (where it is important to "touch" all files that are used, and less if all the functionality works as designed - this should be tested by the software itself).
 

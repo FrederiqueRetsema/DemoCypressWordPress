@@ -7,7 +7,7 @@ describe('Lost password', () => {
   it('Push button New Password', () => {
 
 	cy.get('input#user_login.input')
-	  .type('TestUser')
+	  .type(Cypress.env('userId'))
 
 	cy.contains('Get New Password')
 	  .click()

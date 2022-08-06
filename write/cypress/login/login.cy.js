@@ -6,12 +6,12 @@ describe('Login', () => {
 	cy.wait(1500)
 
     cy.get('input#user_login.input')
-      .type('TestUser')
-      .should('have.value', 'TestUser')  
+      .type(Cypress.env('userId'))
+      .should('have.value', Cypress.env('userId'))  
     
     cy.get('input#user_pass.input.password-input')
-      .type('C1nder3llaInW0rdpre$$!')
-      .should('have.value', 'C1nder3llaInW0rdpre$$!')  
+      .type(Cypress.env('password'))
+      .should('have.value', Cypress.env('password'))  
     
     cy.contains('Log In')
       .click()
@@ -37,12 +37,12 @@ describe('Login', () => {
 	cy.wait(1500)
 
     cy.get('input#user_login.input')
-      .type('TestUser')
-      .should('have.value', 'TestUser')  
+      .type(Cypress.env('userId'))
+      .should('have.value', Cypress.env('userId'))  
     
     cy.get('input#user_pass.input.password-input')
-      .type("C1nder3llaInW0rdpre$$!")
-      .should('have.value', 'C1nder3llaInW0rdpre$$!')  
+      .type(Cypress.env('password'))
+      .should('have.value', Cypress.env('password'))  
 
 	cy.contains('Remember Me')
     cy.get('input#rememberme')
@@ -64,7 +64,7 @@ describe('Login', () => {
 	// When done manually, it is visible.
     cy.get('input#user_login.input')
       .click()
-	cy.contains("TestUser")
+	cy.contains(Cypress.env('userId'))
 	cy.contains("********")
     
   })  

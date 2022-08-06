@@ -7,34 +7,21 @@
 // commands please read more here:
 // https://on.cypress.io/custom-commands
 // ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
 
 Cypress.Commands.add('login', () => { 
   cy.session("write", () => {
     cy.visit('/wp-admin')
-    cy.get('input#user_login.input').type("TestUser")
-    cy.get('input#user_pass.input.password-input').type('C1nder3llaInW0rdpre$$!')
+	cy.wait(1500)
+    cy.get('input#user_login.input').type(Cypress.env('userId'))
+    cy.get('input#user_pass.input.password-input').type(Cypress.env('password'))
     cy.contains('Log In').click()
     cy.url().should('contain', '/wp-admin')
   })
 })
 
-//
-//
-//		  "wp-submit": "Log In",
-//		  "redirect_to": "http://127.25.0.1/wp-admin",
-//		  "testcookie": "1"
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+Cypress.Commands.add('logout', () => { 
+	cy.contains('Log Out')
+	  .click({force: true})
+	cy.url()
+	  .should('not.include', '/wp-admin')
+})

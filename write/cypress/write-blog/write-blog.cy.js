@@ -1,6 +1,4 @@
-// Bold/Italics in normal text not possible because menu doesn't get visible. Also needed in List, Quote.
-// Upload image: possible to check if upload succeeded?
-// List: possible to test if type of list (bullet, numbered etc) is correct?
+// Upload image: possible to check if upload succeeded? (both from local file system and from URL)
 
 describe('write blog', () => {
   beforeEach(() => {
@@ -9,14 +7,14 @@ describe('write blog', () => {
   
   it('Skip welcome', () => {
     cy.visit('/wp-admin/post-new.php')
-	cy.focused()
+	cy.focused({force:true})
 	  .click()
   })
   
   it('Title', () => {
     cy.visit('/wp-admin/post-new.php')
 	// Skip welcome
-	cy.focused()
+	cy.focused({force:true})
 	  .click()
 	  
     cy.get('[aria-label="Add title"]')
@@ -27,7 +25,7 @@ describe('write blog', () => {
   it('Add heading h2', () => {
     cy.visit('/wp-admin/post-new.php')
 	// Skip welcome
-	cy.focused()
+	cy.focused({force:true})
 	  .click()
 	  
     cy.get('[aria-label="Add block"]')
@@ -35,14 +33,15 @@ describe('write blog', () => {
 	cy.contains("Heading")
 	  .click()
 	cy.get('[aria-label="Block: Heading"]')
-	  .type("MyHeading")
+	  .type("MyHeading", {force:true})
 	cy.contains("MyHeading")
+	cy.get('h2')
   })
   
   it('Add normal text', () => {
     cy.visit('/wp-admin/post-new.php')
 	// Skip welcome
-	cy.focused()
+	cy.focused({force:true})
 	  .click()
 
 	cy.get('[aria-label="Add default block"]')
@@ -53,36 +52,86 @@ describe('write blog', () => {
   it('Add bold text', () => {
     cy.visit('/wp-admin/post-new.php')
 	// Skip welcome
-	cy.focused()
+	cy.focused({force:true})
 	  .click()
 	  
-	cy.get('div.is-root-container.block-editor-block-list__layout')
+	cy.get('[aria-label="Add default block"]')
 	  .type(' ')
-      .trigger('mousemove')
+	cy.get('[aria-label="Tools"]')
 	  .click()
-	cy.wait(100)
-	cy.get('[aria-label="Block tools"]',{force:true})
+	cy.get('div.components-popover__content',{force:true})
+	  .invoke('show')
       .trigger('mousemove')
     cy.get('[aria-label="Bold"]')
-	  .click()
+	  .click({force:true})
 
-	cy.get('div.is-root-container.block-editor-block-list__layout')
-	  .type('MyBoldText')
+	cy.get('[aria-label="Paragraph block"]')
+	  .type('MyBoldText', {force:true})
 	cy.contains('MyBoldText')
-	// Doesn't work: the context menu doesn't show
+	cy.get('b')
   })
 
-  it('Add image (incl. block)', () => {
+  it('Add italic text', () => {
     cy.visit('/wp-admin/post-new.php')
 	// Skip welcome
-	cy.focused()
+	cy.focused({force:true})
+	  .click()
+	  
+	cy.get('[aria-label="Add default block"]')
+	  .type(' ')
+	cy.get('[aria-label="Tools"]')
+	  .click()
+	cy.get('div.components-popover__content',{force:true})
+	  .invoke('show')
+      .trigger('mousemove')
+    cy.get('[aria-label="Italic"]')
+	  .click({force:true})
+
+	cy.get('[aria-label="Paragraph block"]')
+	  .type('MyItalicText', {force:true})
+	cy.contains('MyItalicText')
+	cy.get('em')
+  })
+
+  it('Add image (from local file)', () => {
+    cy.visit('/wp-admin/post-new.php')
+	// Skip welcome
+	cy.focused({force:true})
 	  .click()
 	  
     cy.get('[aria-label="Add block"]')
       .click()
 	cy.contains('Image')
 	  .click()
-	cy.contains('Insert from URL')
+	  
+  	cy.get('button.components-button.block-editor-media-placeholder__button.block-editor-media-placeholder__upload-button.is-primary')
+	  .within(() => {
+	  
+		cy.contains("Upload")
+	      .click({force:true})
+	  })
+	  
+	// Downloaded from: https://s.w.org/style/images/about/WordPress-logotype-standard.png
+	cy.get('[data-testid="form-file-upload-input"]')
+	  .selectFile('cypress\\fixtures\\WordPress-logotype-standard.png', {force:true})  
+
+	cy.get('[aria-label="Image caption text"]')
+	  .type("WordPress{enter}")
+
+  })
+
+  it('Add image (incl. block)', () => {
+    cy.visit('/wp-admin/post-new.php')
+	// Skip welcome
+	cy.focused({force:true})
+	  .click()
+	  
+    cy.get('[aria-label="Add block"]')
+      .click()
+	cy.contains('Image')
+	  .click()
+	  
+    cy.contains('Insert from URL')
 	  .click()
 	cy.get('[aria-label="URL"]')
 	  .type("https://www.pronamic.nl/wp-content/uploads/2019/10/Featured-image-WordPress.svg{enter}")
@@ -97,42 +146,50 @@ describe('write blog', () => {
 	cy.get('[id="inspector-textarea-control-1"]')
 	  .type('Caption-in-submenu')
 	  .should('have.value', 'Caption-in-submenu')
-	  
-	// Size X 1540 -> 154
-	cy.get('[id="inspector-text-control-2"]')
+	
+ 	// Size X 1540 -> 154
+  	cy.get('[id="inspector-text-control-2"]')
 	  .clear()
 	  .type('154')
 	  .should("have.value", '154')
 
-	// Size Y 800 -> 80
+ 	// Size Y 800 -> 80
 	cy.get('[id="inspector-text-control-3"]')
 	  .clear()
 	  .type('80')
 	  .should("have.value", '80')
 
     // Button 25%	  
-	 cy.contains('25%')
-	   .click()
- 	 cy.get('[id="inspector-text-control-3"]')
-	  .should('have.value', '200')
+	cy.contains('25%')
+	  .click()
+	  .then(()=>{
+ 	     cy.get('[id="inspector-text-control-3"]')
+	       .should('have.value', '200')
+	   })
 
     // Button 50%	  
-	 cy.contains('50%')
-	   .click()
- 	 cy.get('[id="inspector-text-control-3"]')
-	  .should('have.value', '400')
+	cy.contains('50%')
+	  .click()
+ 	  .then(() => {
+ 	     cy.get('[id="inspector-text-control-3"]')
+	       .should('have.value', '400')
+      })
 
     // Button 75%	  
-	 cy.contains('75%')
-	   .click()
- 	 cy.get('[id="inspector-text-control-3"]')
-	  .should('have.value', '600')
+	cy.contains('75%')
+	  .click()
+	  .then(() => {
+ 	    cy.get('[id="inspector-text-control-3"]')
+	      .should('have.value', '600')
+   	  })
 
     // Button 100%	  
-	 cy.contains('100%')
-	   .click()
- 	 cy.get('[id="inspector-text-control-3"]')
-	  .should('have.value', '800')
+	cy.contains('100%')
+	  .click()
+      .then(() => {
+        cy.get('[id="inspector-text-control-3"]')
+	      .should('have.value', '800')
+	  })
 
 
     // Radius
@@ -151,45 +208,60 @@ describe('write blog', () => {
 	
   })
 
-  it.skip('Add List', () => {
+  it('Add List', () => {
     cy.visit('/wp-admin/post-new.php')
 	// Skip welcome
-	cy.focused()
+	cy.focused({force:true})
 	  .click()
 
     cy.get('[aria-label="Add block"]')
       .click()
-	cy.contains("List")
-	  .click()
+	cy.get('[aria-label="Blocks"]')
+	  .within(() => {
+  	    cy.contains("List")
+	      .click({force:true})
+    })
 	  
-	// Default: bullet list
+	// List (unordered)
 	cy.get('[aria-label="Block: List"]')
-	  .type("MyList")
-	cy.contains("MyList")
-
-    //===========Doesn't work from here, see before: window not visible====
-    // Change into numbered
+	  .type("MyList (unordered)", {force:true})
+	cy.contains("MyList (unordered)")
+	cy.get('ul')
+	cy.contains('(unordered)')
+	
+	// List (ordered)
+	cy.get('[aria-label="Tools"]')
+	  .click()
+	cy.get('[aria-label="Block: List"]',{force:true})
+	  .click({force:true})
 	cy.get('[aria-label="Ordered"]')
 	  .click()
-	cy.contains("MyList")
 
-    // Change back into bullet list
-	cy.get('[aria-label="Unordered"]')
-	  .click()
-	cy.contains("MyList")
-	
+	cy.get('[aria-label="Block: List"]')
+	  .clear({force:true})
+	  .type("MyList (ordered)",{force:true})
+	cy.get('ol')
+	cy.contains('(ordered)')
+
     // Make bold
-	cy.get('[aria-label="Bold"]')
+	cy.get('[aria-label="Tools"]')
 	  .click()
-	cy.contains("MyList")
-	
+	cy.get('[aria-label="Block: List"]',{force:true})
+	  .click({force:true})
+    cy.get('[aria-label="Bold"]')
+	  .click({force:true})
+
+	cy.get('[aria-label="Block: List"]')
+	  .type('Bold',{force:true})
+	cy.contains('Bold')
+	cy.get('b')
 	
   })
 
-  it.skip('Add Quote', () => {
+  it('Add Quote', () => {
     cy.visit('/wp-admin/post-new.php')
 	// Skip welcome
-	cy.focused()
+	cy.focused({force:true})
 	  .click()
 
     cy.get('[aria-label="Add block"]')
@@ -199,7 +271,7 @@ describe('write blog', () => {
 	  
 	// Quote
 	cy.get('[aria-label="Quote text"]')
-	  .type("MyQuote")
+	  .type("MyQuote", {force:true})
 	cy.contains("MyQuote")
 
 	// Citation
@@ -207,16 +279,24 @@ describe('write blog', () => {
 	  .type("Quote citation")
 	cy.contains("Quote citation")
 
-    // =========Doesn't work===
     // Make bold
-	cy.get('[aria-label="Bold"]')
+	cy.get('[aria-label="Tools"]')
 	  .click()
-	cy.contains("MyList")
+	cy.get('[aria-label="Quote citation text"]',{force:true})
+	  .invoke('show')
+      .trigger('mousemove', {force:true})
+    cy.get('[aria-label="Bold"]')
+	  .click({force:true})
+
+	cy.get('[aria-label="Quote citation text"]')
+	  .type('Bold')
+	cy.contains('Bold')
+	cy.get('b')
 	
   })
 })
 
-describe.skip("Browse All", () => {
+describe("Browse All", () => {
   beforeEach(() => {
     cy.login()
   })
@@ -224,7 +304,7 @@ describe.skip("Browse All", () => {
   it('Add Code', () => {
     cy.visit('/wp-admin/post-new.php')
 	// Skip welcome
-	cy.focused()
+	cy.focused({force:true})
 	  .click()
 
     cy.get('[aria-label="Add block"]')
@@ -242,7 +322,7 @@ describe.skip("Browse All", () => {
   it('Add Pullquote', () => {
     cy.visit('/wp-admin/post-new.php')
 	// Skip welcome
-	cy.focused()
+	cy.focused({force:true})
 	  .click()
 
     cy.get('[aria-label="Add block"]')
@@ -261,37 +341,53 @@ describe.skip("Browse All", () => {
 	cy.contains('MyCitation')
   })
 
-})
-
-describe.skip('Newest test', () => {
-  beforeEach(() => {
-    cy.login()
-  })
-
-  it('Add bold text', () => {
+  it('Add Table', () => {
     cy.visit('/wp-admin/post-new.php')
 	// Skip welcome
-	cy.focused()
+	cy.focused({force:true})
+	  .click()
+
+    cy.get('[aria-label="Add block"]')
+      .click()
+	cy.contains("Browse all")
+	  .click()
+	cy.contains("Table")
 	  .click()
 	  
-	cy.get('[aria-label="Add default block"]')
-	  .type(' ')
-	cy.get('[aria-label="Paragraph block"]')
-	  .click()
-	cy.wait(100)
-	cy.get('div.components-popover__content',{force:true})
-	  .invoke('show')
-      .trigger('mousemove')
-    cy.get('[aria-label="Bold"]')
-	  .click({force:true})
+	// make 3 x 4 instead of 2 x 2
+	cy.get('input#inspector-text-control-0.components-text-control__input')
+	  .clear()
+	  .type(3, {force:true})
+	  .should('have.value', 3)
 
-	cy.get('div.is-root-container.block-editor-block-list__layout')
-	  .type('MyBoldText')
-	cy.contains('MyBoldText')
-	// Doesn't work: the context menu doesn't show
+	cy.get('input#inspector-text-control-1.components-text-control__input')
+	  .clear()
+	  .type(4, {force:true})
+	  .should('have.value', 4)
+	
+	cy.contains("Create Table")
+	  .click()
+
+    cy.get('[aria-label="Body cell text"]')	
+	  .first()
+	  .type('Cell Text')
+	cy.contains('Cell Text')
   })
 
+  it('Add More', () => {
+    cy.visit('/wp-admin/post-new.php')
+	// Skip welcome
+	cy.focused({force:true})
+	  .click()
+
+    cy.get('[aria-label="Add block"]')
+      .click()
+	cy.contains("Browse all")
+	  .click()
+	cy.contains("More")
+	  .click()
+	  
+	cy.get('[aria-label="Block: More"]')
+  })
 })
-
-
 

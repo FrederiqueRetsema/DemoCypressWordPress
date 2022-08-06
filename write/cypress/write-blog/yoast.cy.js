@@ -127,3 +127,184 @@ describe('Yoast SEO (bottom of the page)', () => {
 
 })
 
+describe('Yoast - sidemenu', () => {
+  beforeEach(() => {
+    cy.login()
+  })
+
+  it('Keyphrase', () => {
+    cy.visit('/wp-admin/post-new.php')
+	// Skip welcome
+	cy.focused({force:true})
+	  .click()
+	cy.get('div.edit-post-header__settings')
+	  .within(() => {
+	    cy.get('[aria-label="Yoast SEO"]')
+	      .click()
+	  })
+
+	cy.get('input#focus-keyword-input-sidebar')
+	  .type('Testing')
+      .should('have.value', 'Testing')
+	cy.contains('Get related keyphrases')
+  })
+
+  it('SEO analysis', () => {
+    cy.visit('/wp-admin/post-new.php')
+	// Skip welcome
+	cy.focused({force:true})
+	  .click()
+	cy.get('div.edit-post-header__settings')
+	  .within(() => {
+	    cy.get('[aria-label="Yoast SEO"]')
+	      .click()
+	  })
+
+	cy.get('button.components-button.components-panel__body-toggle')
+	  .within(() => {
+  	      cy.contains('SEO analysis')
+	        .click()
+	  })
+  })
+
+  it('Readability analysis', () => {
+    cy.visit('/wp-admin/post-new.php')
+	// Skip welcome
+	cy.focused({force:true})
+	  .click()
+	cy.get('div.edit-post-header__settings')
+	  .within(() => {
+	    cy.get('[aria-label="Yoast SEO"]')
+	      .click()
+	  })
+
+	cy.get('button.components-button.components-panel__body-toggle')
+	  .within(() => {
+  	      cy.contains('Readability analysis')
+	        .click()
+	  })
+  })
+
+  it('Google preview', () => {
+    cy.visit('/wp-admin/post-new.php')
+	// Skip welcome
+	cy.focused({force:true})
+	  .click()
+	cy.get('div.edit-post-header__settings')
+	  .within(() => {
+	    cy.get('[aria-label="Yoast SEO"]')
+	      .click()
+	  })
+
+	cy.get('button.components-button.components-panel__body-toggle')
+	  .within(() => {
+  	      cy.contains('Google preview')
+	        .click()		
+	  })
+  })
+
+  it('Facebook preview', () => {
+    cy.visit('/wp-admin/post-new.php')
+	// Skip welcome
+	cy.focused({force:true})
+	  .click()
+	cy.get('div.edit-post-header__settings')
+	  .within(() => {
+	    cy.get('[aria-label="Yoast SEO"]')
+	      .click()
+	  })
+
+	cy.get('button.components-button.components-panel__body-toggle')
+	  .within(() => {
+  	      cy.contains('Facebook preview')
+	        .click()
+	  })
+  })
+
+  it('Twitter preview', () => {
+    cy.visit('/wp-admin/post-new.php')
+	// Skip welcome
+	cy.focused({force:true})
+	  .click()
+	cy.get('div.edit-post-header__settings')
+	  .within(() => {
+	    cy.get('[aria-label="Yoast SEO"]')
+	      .click()
+	  })
+
+	cy.get('button.components-button.components-panel__body-toggle')
+	  .within(() => {
+  	      cy.contains('Twitter preview')
+	        .click()
+	  })
+  })
+
+  it('Advanced', () => {
+    cy.visit('/wp-admin/post-new.php')
+	// Skip welcome
+	cy.focused({force:true})
+	  .click()
+	cy.get('div.edit-post-header__settings')
+	  .within(() => {
+	    cy.get('[aria-label="Yoast SEO"]')
+	      .click()
+	  })
+
+	cy.get('button.components-button.components-panel__body-toggle')
+	  .within(() => {
+  	      cy.contains('Advanced')
+	        .click()			
+	  })
+    cy.get('input#yoast-meta-robots-nofollow-sidebar_1')
+	  .click()
+	cy.get('input#yoast-meta-robots-nofollow-sidebar_0')
+	  .click()
+    cy.get('input#yoast-breadcrumbs-title-sidebar')
+	  .type('myBreadcrumbs')
+	  .should('have.value', 'myBreadcrumbs')
+    cy.get('input#yoast-canonical-sidebar')
+	  .type('http://example.com')
+	  .should('have.value', 'http://example.com')
+
+  })
+
+  it('Cornerstone content', () => {
+    cy.visit('/wp-admin/post-new.php')
+	// Skip welcome
+	cy.focused({force:true})
+	  .click()
+	cy.get('div.edit-post-header__settings')
+	  .within(() => {
+	    cy.get('[aria-label="Yoast SEO"]')
+	      .click()
+	  })
+
+	cy.get('button.components-button.components-panel__body-toggle')
+	  .within(() => {
+  	      cy.contains('Cornerstone content')
+	        .click()			
+	  })
+	cy.get('[aria-labelledby="yoast-cornerstone-sidebar"]')
+	  .click()
+
+  })
+
+  it('Insights', () => {
+    cy.visit('/wp-admin/post-new.php')
+	// Skip welcome
+	cy.focused({force:true})
+	  .click()
+	cy.get('div.edit-post-header__settings')
+	  .within(() => {
+	    cy.get('[aria-label="Yoast SEO"]')
+	      .click()
+	  })
+
+	cy.get('button.components-button.components-panel__body-toggle')
+	  .within(() => {
+  	      cy.contains('Insights')
+	        .click()			
+	  })
+  })
+
+})
