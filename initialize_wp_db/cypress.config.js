@@ -1,5 +1,5 @@
 const { defineConfig } = require("cypress");
-const siteIpAddress = '172.19.176.1'
+const siteIpAddress = '192.168.2.202'
 
 module.exports = defineConfig({
   env: {
