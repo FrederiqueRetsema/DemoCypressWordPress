@@ -3,7 +3,7 @@
 Demo Cypress tests with WordPress
 
 # Start of the demo
-I'm using a Windows 10 Enterprise laptop with Windows Sandbox for this demo. In this document the laptop is called "host", the sanbox is called "sandbox". You can install Windows Sandbox by searching for "Turn on Windows Features" and then switch on Windows Sandbox on your laptop. Windows Sandbox also uses Hyper-V. Using WIndows Sandbox requires a reboot.
+I'm using a Windows 11 Enterprise laptop with Windows Sandbox for this demo. In this document the laptop is called "host", the sanbox is called "sandbox". You can install Windows Sandbox by searching for "Turn on Windows Features" and then switch on Windows Sandbox on your laptop. Windows Sandbox also uses Hyper-V. Using Windows Sandbox requires a reboot.
 
 ## Configure sandbox
 Change the DemoCypressSandbox.wsb file in this repo to connect the directory where you cloned this repo from to C:\Demo. Start the sanbox by double clicking on this file. Within the sandbox, open a privileged Powershell window and execute the following commands:
@@ -98,14 +98,23 @@ You now see that the configuration screens are filled in automatically. When eve
 # Demo
 
 ## Labels (Chrome)
-
 In the demo, use the \demo\write directory as the base to show what is going on:
 * Start Chrome
 * Start notepad++, open c:\demo\write\
-* Show via F12 
+* Show via F12 how you can see what part of the screen has what labels
+
+There are best practices for selecting labels for your tests: https://docs.cypress.io/guides/references/best-practices#Selecting-Elements
+
+## Login / logout
+
+## Integration between browser and NodeJS
+
+## Video and screenshots
+When you use cypress run instead of cypress open then all tests will be run and a video will be created afterwards. WHen there are errors, screenshots will be created as well. You can enforce creating a screenshot on certain points in the tests by using the cy.screenshot() comment. 
+
+## 
 
 # Important
 
 ## Goal of this demo
 This repo is the base for the demo. It contains a lot of tests, mainly to show how Cypress works. Many tests are just meant to trigger the use of a file on the serverside, not to do intensive testing of the functionality. The reason for this is that these tests will be the base for another example repository about distroless containers (where it is important to "touch" all files that are used, and less if all the functionality works as designed - this should be tested by the software itself).
-
