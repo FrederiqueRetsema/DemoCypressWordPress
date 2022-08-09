@@ -924,7 +924,7 @@ describe('Spam and trash', () => {
 
 describe('Comments from enduser to wp-admin', () => {
   
-  it('Add commit', () => {
+  it('Add comment', () => {
   	  cy.task('remove_test_comments')
 	  cy.visit('/')
 	  cy.contains('Hello world!')

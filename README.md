@@ -37,7 +37,7 @@ On the host, start wordpress and mysql via Docker:
 
 ```
 docker run -d -p 80:80 --name wordpress wordpress
-docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD='C1nder3llaInW0rdpre$$!' --name mysql mysql
+docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=C1nder3llaInW0rdpre$$! --name mysql mysql
 ```
 
 Create the wordpress database (<-- enter *C1nder3llaInW0rdpre$$!* as the password):
@@ -50,7 +50,7 @@ exit
 exit
 ```
 
-You might have to open the firewall for port 80: the sandbox is not able to use the local host address for the connection to the host. We need to know what the current IP address is of the host:
+You might have to open the firewall for the ports 80 and 3306: the sandbox is not able to use the local host address for the connection to the host. We need to know what the current IP address is of the host:
 
 ```
 ipconfig
@@ -74,12 +74,12 @@ Ethernet adapter vEthernet (Default Switch):
 
 In the sandbox, open Chrome and go to http://172.25.0.1,  you should see the selection screen for languages from WordPress.
 
-In the rest of this document, I'm using 172.25.0.1 (it worked for me, when it doesn't work for you please check the firewall and when it still doesn't work try another IP address from the list).
+In the rest of this document, I'm using 172.25.0.1 (it worked for me, when it doesn't work for you please check the firewall and when it still doesn't work try another IP address from the list). 
 
 In the sandbox, change the IP address to your value in the files c:\demo\initialize_wp_db\config.cy.js and c:\demo\write\config.cy.js
 
 ## Firewall
-You might have to open ports 80 and 3306 in the firewall. Please mind that Docker might block all traffic from other network cards.
+You need to open ports 80 and 3306 in the firewall. Please mind that Docker might block all traffic from other network cards.
 
 
 ## Initialize WordPress

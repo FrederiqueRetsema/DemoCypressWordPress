@@ -1,5 +1,5 @@
 const { defineConfig } = require("cypress");
-const siteIpAddress = '192.168.2.202'
+const siteIpAddress = '192.168.2.28'
 const userId = 'TestUser'
 const password = 'C1nder3llaInW0rdpre$$!'
 const databaseName = 'wordpress'

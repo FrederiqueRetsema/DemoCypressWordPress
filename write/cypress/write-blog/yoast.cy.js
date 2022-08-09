@@ -1,9 +1,5 @@
 // Upload image: possible to check if upload succeeded? (both from local file system and from URL)
 
-// Yoast has a lot of elements with seemingly random names. Keep them here to make it easier to replace them in
-// a future release where they might change this.
-const SEO_tab_SEO_title_block = "sc-fXeWgy.hmFFGo"
-
 describe('Yoast SEO (bottom of the page)', () => {
   beforeEach(() => {
     cy.login()
@@ -28,19 +24,15 @@ describe('Yoast SEO (bottom of the page)', () => {
 	      cy.get('input#yoast-google-preview-mode-mobile-metabox')
 	        .click()
 
-	      cy.get('div.'+ SEO_tab_SEO_title_block)
-		    .first()
-	        .within(() => {
-		        cy.contains('Insert variable')
-		          .click()
-		        cy.contains('Primary category')
-		          .click()
-     	    })
+		  cy.contains('Insert variable')
+		    .click()
+		  cy.contains('Primary category')
+		    .click()
 
           cy.get('input#yoast-google-preview-slug-metabox')
             .type('MySlug')	
 	        .should('have.value', 'MySlug')
-			
+
 		  cy.get('div#yoast-google-preview-description-metabox')
 		    .type('MyDescription')
 			.within(() => {
