@@ -43,9 +43,8 @@ docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=C1nder3llaInW0rdpre$$! --name 
 Create the wordpress database (<-- enter *C1nder3llaInW0rdpre$$!* as the password):
 ```
 docker exec -it mysql bash
-mysql -u root -p                    
+mysql -u root -p
 CREATE DATABASE wordpress;
-ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'C1nder3llaInW0rdpre$$!';
 exit
 exit
 ```
